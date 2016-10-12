@@ -1,0 +1,64 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : mysql-admin
+ Source Server Type    : MySQL
+ Source Server Version : 50621
+ Source Host           : localhost
+ Source Database       : mybatis-extends
+
+ Target Server Type    : MySQL
+ Target Server Version : 50621
+ File Encoding         : utf-8
+
+ Date: 09/09/2016 16:38:46 PM
+*/
+
+SET NAMES utf8;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+--  Table structure for `role`
+-- ----------------------------
+DROP TABLE IF EXISTS `role`;
+CREATE TABLE `role` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(64) DEFAULT NULL,
+  `sort` int(11) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+--  Table structure for `user`
+-- ----------------------------
+DROP TABLE IF EXISTS `user`;
+CREATE TABLE `user` (
+  `test_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `name` varchar(30) COLLATE utf8_bin DEFAULT NULL COMMENT '名称',
+  `age` int(11) DEFAULT NULL COMMENT '年龄',
+  `birthday` date DEFAULT NULL COMMENT '出生日期',
+  `test_type` int(11) DEFAULT '0' COMMENT '测试下划线字段命名类型',
+  `role` bigint(20) DEFAULT NULL,
+  `phone` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`test_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=774164658700161025 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户表';
+
+insert  into `user`(`test_id`,`name`,`age`,`test_type`) values (1,'xiejian',32,'2005-09-30',0),(2,'larry',32,'2015-09-30',1);
+-- ----------------------------
+-- Table structure for test
+-- ----------------------------
+DROP TABLE IF EXISTS `test`;
+CREATE TABLE `test` (
+  `id` bigint(20) NOT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of test
+-- ----------------------------
+INSERT INTO `test` VALUES ('1', '11');
+INSERT INTO `test` VALUES ('2', '22');
+
+SET FOREIGN_KEY_CHECKS = 1;
