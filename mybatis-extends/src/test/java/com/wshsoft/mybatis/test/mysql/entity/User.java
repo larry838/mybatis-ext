@@ -31,7 +31,7 @@ public class User implements Serializable {
 	private Long id;
 
 	/* 测试忽略验证 */
-	@TableField(validate = FieldStrategy.IGNORED)
+	@TableField(validate = FieldStrategy.NOT_NULL)
 	private String name;
 
 	private Integer age;
@@ -164,7 +164,7 @@ public class User implements Serializable {
 	public String toString() {
 		return "User{" +
 				"id=" + id +
-				", name='" + name + '\'' +
+				", name=" + name +
 				", age=" + age +
 				", testType=" + testType +
 				", role=" + role +

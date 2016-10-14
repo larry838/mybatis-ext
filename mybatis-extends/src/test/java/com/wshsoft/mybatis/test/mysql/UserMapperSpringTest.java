@@ -57,16 +57,16 @@ public class UserMapperSpringTest {
 	   
 		@Test
 		   public void testquery(){
-			System.err.println("\n------------------list 分页查询 ----查询所有数据--id--DESC--排序--------");
+			System.err.println("\n------------------list 分页查询 ----查询 testType = 1 所有数据--id--DESC--排序--------");
 			Page<User> page = new Page<User>(1, 2);
-			EntityWrapper<User> ew = new EntityWrapper<User>(new User(1));
+			EntityWrapper<User> ew = new EntityWrapper<User>(new User());
 			ew.setSqlSelect("age,name");
 			ew.where("name like {0}", "'%dateBatch%'").and("age={0}", 3).orderBy("test_id", false);
 			List<User> paginList = userMapper.selectPage(page, ew);
 			page.setRecords(paginList);
 			for ( int i = 0 ; i < page.getRecords().size() ; i++ ) {
 				print(page.getRecords().get(i));
-			}
+			} 
 			System.err.println(" 翻页：" + page.toString());
 			
 	    
