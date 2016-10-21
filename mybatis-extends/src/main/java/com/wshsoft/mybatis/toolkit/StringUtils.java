@@ -143,8 +143,9 @@ public class StringUtils {
 	 */
 	public static String quotaMark(Object obj) {
 		String srcStr = String.valueOf(obj);
-		if (obj instanceof String && !srcStr.matches("\'(.+)\'")) {
-			return "\'" + srcStr + "\'";
+		if (obj instanceof String) {
+			// fix #79
+			return EscapeOfString.escapeString(srcStr);
 		}
 		return srcStr;
 	}
@@ -172,8 +173,8 @@ public class StringUtils {
 			return str;
 		}
 
-		return new StringBuilder(strLen).append(concatStr).append(Character.toTitleCase(firstChar))
-				.append(str.substring(1)).toString();
+		return new StringBuilder(strLen).append(concatStr).append(Character.toTitleCase(firstChar)).append(str.substring(1))
+				.toString();
 	}
 
 	/**

@@ -228,4 +228,16 @@ public class EntityWrapperTest {
 		Assert.assertEquals("WHERE (test_type BETWEEN 11 AND 33)", sqlPart);
 	}
 
+	/**
+	 * 测试Escape
+	 */
+	@Test
+	public void testEscape() {
+		String val1 = "'''";
+		String val2 = "\\";
+		ew.between("test_type", val1, val2);
+		String sqlPart = ew.getSqlSegment();
+		System.out.println("sql ==> " + sqlPart);
+		Assert.assertEquals("WHERE (test_type BETWEEN '\\'' AND '\\\\')", sqlPart);
+	}
 }

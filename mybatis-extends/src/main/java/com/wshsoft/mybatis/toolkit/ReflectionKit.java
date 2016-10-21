@@ -1,7 +1,7 @@
 package com.wshsoft.mybatis.toolkit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class ReflectionKit {
 
-	private static Logger logger = LoggerFactory.getLogger(ReflectionKit.class);
+	protected static final Logger logger = Logger.getLogger("ReflectionKit");
 
 	/**
 	 * <p>
@@ -48,11 +48,11 @@ public class ReflectionKit {
 			Method method = cls.getMethod(getMethodCapitalize(str));
 			obj = method.invoke(entity);
 		} catch (NoSuchMethodException e) {
-			logger.warn("Warn: No such method. in " + cls + ".  Cause:" + e);
+			logger.warning("Warn: No such method. in " + cls + ".  Cause:" + e);
 		} catch (IllegalAccessException e) {
-			logger.warn("Warn: Cannot execute a private method. in " + cls + ".  Cause:" + e);
+			logger.warning("Warn: Cannot execute a private method. in " + cls + ".  Cause:" + e);
 		} catch (InvocationTargetException e) {
-			logger.warn("Warn: Unexpected exception on getMethodValue.  Cause:" + e);
+			logger.warning("Warn: Unexpected exception on getMethodValue.  Cause:" + e);
 		}
 		return obj;
 	}
@@ -87,7 +87,7 @@ public class ReflectionKit {
 		Class<?> cls = bean.getClass();
 		TableInfo tableInfo = TableInfoHelper.getTableInfo(cls);
 		if (null == tableInfo) {
-			logger.warn("Warn: Could not find @TableId.");
+			logger.warning("Warn: Could not find @TableId.");
 			return false;
 		}
 		boolean result = false;
