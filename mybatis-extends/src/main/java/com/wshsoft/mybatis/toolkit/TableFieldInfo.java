@@ -85,7 +85,7 @@ public class TableFieldInfo {
 	}
 
 	public void setColumn(String column) {
-		this.column = DBKeywordsProcessor.convert(column);
+		this.column = SqlReservedWords.convert(column);
 	}
 
 	public String getProperty() {

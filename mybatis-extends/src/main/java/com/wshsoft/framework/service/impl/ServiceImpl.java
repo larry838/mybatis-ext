@@ -1,5 +1,14 @@
 package com.wshsoft.framework.service.impl;
 
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.wshsoft.framework.service.IService;
 import com.wshsoft.mybatis.annotations.IdType;
 import com.wshsoft.mybatis.exceptions.MybatisExtendsException;
@@ -10,24 +19,17 @@ import com.wshsoft.mybatis.toolkit.CollectionUtil;
 import com.wshsoft.mybatis.toolkit.ReflectionKit;
 import com.wshsoft.mybatis.toolkit.TableInfo;
 import com.wshsoft.mybatis.toolkit.TableInfoHelper;
-import org.springframework.beans.factory.annotation.Autowired;
-import java.util.logging.Logger;
-
-import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>
  * IService 实现类（ 泛型：M 是 mapper 对象，T 是实体 ， PK 是主键泛型 ）
  * </p>
  *
- * @author hubin
+ * @author carry xie
  * @Date 2016-04-20
  */
 public class ServiceImpl<M extends BaseMapper<T, PK>, T, PK extends Serializable> implements IService<T, PK> {
-	
-	
+
 	protected static final Logger logger = Logger.getLogger("ServiceImpl");
 
 	@Autowired
@@ -90,62 +92,118 @@ public class ServiceImpl<M extends BaseMapper<T, PK>, T, PK extends Serializable
 		return insertOrUpdate(entity, true);
 	}
 
-
 	public boolean insert(T entity) {
 		return retBool(baseMapper.insert(entity));
 	}
 
-	
 	public boolean insertSelective(T entity) {
 		return retBool(baseMapper.insertSelective(entity));
 	}
 
-
 	public boolean insertBatch(List<T> entityList) {
+		if (null == entityList) {
+			throw new IllegalArgumentException("entityList must not be empty");
+		}
 		return retBool(baseMapper.insertBatch(entityList));
 	}
 
+	public boolean insertBatchSelective(List<T> entityList, int batchSize) {
+		return insertBatch(entityList, batchSize, true);
+	}
+
+	public boolean insertBatch(List<T> entityList, int batchSize) {
+		return insertBatch(entityList, batchSize, false);
+	}
+
+	/**
+	 * 批量插入
+	 *
+	 * @param entityList
+	 * @param batchSize
+	 * @param isSelective
+	 * @return
+	 */
+	protected boolean insertBatch(List<T> entityList, int batchSize, boolean isSelective) {
+		if (null == entityList) {
+			throw new IllegalArgumentException("entityList must not be empty");
+		}
+		TableInfo tableInfo = TableInfoHelper.getTableInfo(currentModleClass());
+		if (null == tableInfo) {
+			throw new MybatisExtendsException("Error: insertBatch Fail, ClassGenricType not found .");
+		}
+		SqlSession batchSqlSession = tableInfo.getSqlSessionFactory().openSession(ExecutorType.BATCH, false);
+		try {
+			int size = entityList.size();
+			for (int i = 0; i < size; i++) {
+				if (isSelective) {
+					baseMapper.insertSelective(entityList.get(0));
+				} else {
+					baseMapper.insert(entityList.get(0));
+				}
+				if (i % batchSize == 0) {
+					batchSqlSession.flushStatements();
+				}
+			}
+			batchSqlSession.flushStatements();
+		} catch (Exception e) {
+			logger.warning("Warn: Method insertBatch Fail. Cause:" + e);
+			return false;
+		}
+		return true;
+
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Class<T> currentModleClass() {
+		return ReflectionKit.getSuperClassGenricType(getClass(), 1);
+	}
+
+	public boolean insertBatchSelective(List<T> entityList) {
+		if (null == entityList) {
+			throw new IllegalArgumentException("entityList must not be empty");
+		}
+		int result = 0;
+		for (T t : entityList) {
+			result = baseMapper.insertSelective(t);
+			if (result <= 0) {
+				break;
+			}
+		}
+		return retBool(result);
+	}
 
 	public boolean deleteById(Serializable id) {
 		return retBool(baseMapper.deleteById(id));
 	}
 
-	
 	public boolean deleteByMap(Map<String, Object> columnMap) {
 		return retBool(baseMapper.deleteByMap(columnMap));
 	}
 
-	
 	public boolean deleteSelective(T entity) {
 		return retBool(baseMapper.deleteSelective(entity));
 	}
 
-	
 	public boolean deleteBatchIds(List<? extends Serializable> idList) {
 		return retBool(baseMapper.deleteBatchIds(idList));
 	}
-
 
 	public boolean updateById(T entity) {
 		return retBool(baseMapper.updateById(entity));
 	}
 
-
 	public boolean updateSelectiveById(T entity) {
 		return retBool(baseMapper.updateSelectiveById(entity));
 	}
-
 
 	public boolean update(T entity, T whereEntity) {
 		return retBool(baseMapper.update(entity, whereEntity));
 	}
 
-	
 	public boolean updateSelective(T entity, T whereEntity) {
 		return retBool(baseMapper.updateSelective(entity, whereEntity));
 	}
 
-	
 	public boolean updateBatchById(List<T> entityList) {
 		return retBool(baseMapper.updateBatchById(entityList));
 	}
@@ -160,7 +218,7 @@ public class ServiceImpl<M extends BaseMapper<T, PK>, T, PK extends Serializable
 
 	public List<T> selectByMap(Map<String, Object> columnMap) {
 		return baseMapper.selectByMap(columnMap);
-	}
+	}  
 
 	public T selectOne(T entity) {
 		return baseMapper.selectOne(entity);
@@ -197,4 +255,5 @@ public class ServiceImpl<M extends BaseMapper<T, PK>, T, PK extends Serializable
 		page.setRecords(baseMapper.selectPage(page, entityWrapper));
 		return page;
 	}
+
 }

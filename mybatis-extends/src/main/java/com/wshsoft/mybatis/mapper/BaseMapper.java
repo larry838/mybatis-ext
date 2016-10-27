@@ -18,7 +18,7 @@ import org.apache.ibatis.session.RowBounds;
  * @author hubin
  * @Date 2016-01-23
  */
-public interface BaseMapper<T, PK> {
+public interface BaseMapper<T, PK extends Serializable> {
 
 	/**
 	 * <p>

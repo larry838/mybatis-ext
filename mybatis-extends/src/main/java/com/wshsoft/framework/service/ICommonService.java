@@ -11,3 +11,4 @@ package com.wshsoft.framework.service;
 public interface ICommonService<T> extends IService<T, String> {
 	
 }
+

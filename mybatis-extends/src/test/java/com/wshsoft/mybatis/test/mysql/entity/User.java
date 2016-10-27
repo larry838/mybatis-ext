@@ -42,6 +42,8 @@ public class User implements Serializable {
 
 	@TableField(el = "role.id",value = "role_id")
 	private Role role;
+	
+	private String desc = "默认描述";
 
 	//或@TableField(el = "role,jdbcType=BIGINT)
 	@TableField(el = "phone, typeHandler=com.wshsoft.mybatis.test.mysql.typehandler.PhoneTypeHandler")
@@ -160,16 +162,18 @@ public class User implements Serializable {
 		this.phone = phone;
 	}
 
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
 	@Override
 	public String toString() {
-		return "User{" +
-				"id=" + id +
-				", name=" + name +
-				", age=" + age +
-				", testType=" + testType +
-				", role=" + role +
-				", phone=" + phone +
-				'}';
+		return "User{" + "id=" + id + ", name='" + name + '\'' + ", age=" + age + ", testType=" + testType + ", role="
+				+ role + ", phone=" + phone + ", desc=" + desc + '}';
 	}
 
 	/**

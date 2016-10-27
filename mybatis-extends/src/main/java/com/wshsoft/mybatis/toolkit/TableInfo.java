@@ -2,6 +2,8 @@ package com.wshsoft.mybatis.toolkit;
 
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSessionFactory;
+
 import com.wshsoft.mybatis.annotations.IdType;
 
 /**
@@ -46,6 +48,11 @@ public class TableInfo {
 	 * 表主键ID 字段名
 	 */
 	private String keyColumn;
+	
+	/**
+	 * 缓存SqlSessionFactory
+	 */
+	private SqlSessionFactory sqlSessionFactory;
 
 	/**
 	 * 表字段信息列表
@@ -108,4 +115,11 @@ public class TableInfo {
 		this.fieldList = fieldList;
 	}
 
+	public SqlSessionFactory getSqlSessionFactory() {
+		return sqlSessionFactory;
+	}
+
+	public void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
+		this.sqlSessionFactory = sqlSessionFactory;
+	}
 }

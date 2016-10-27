@@ -11,7 +11,7 @@ import com.wshsoft.mybatis.test.mysql.entity.User;
 
 /**
  * <p>
- * 继承 AutoMapper，就自动拥有CRUD方法
+ * 继承 BaseMapper，就自动拥有CRUD方法
  * </p>
  * 
  * @author carry xie

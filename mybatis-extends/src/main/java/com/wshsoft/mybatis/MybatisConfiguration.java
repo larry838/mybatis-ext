@@ -75,7 +75,7 @@ public class MybatisConfiguration extends Configuration {
 	public MybatisConfiguration() {
 		System.err.println("mybatis-extends init success.");
 	}
-
+	
 	/**
 	 * <p>
 	 * mybatis-extends 加载 SQL 顺序：

@@ -18,7 +18,8 @@ import java.util.Map;
 
 import com.wshsoft.mybatis.annotations.IdType;
 import com.wshsoft.mybatis.exceptions.MybatisExtendsException;
-import com.wshsoft.mybatis.toolkit.DBKeywordsProcessor;
+import com.wshsoft.mybatis.mapper.DBType;
+import com.wshsoft.mybatis.toolkit.SqlReservedWords;
 import com.wshsoft.mybatis.toolkit.StringUtils;
 
 /**
@@ -54,6 +55,7 @@ public class AutoGenerator {
 	protected static String PATH_XML = null;
 	protected static String PATH_SERVICE = null;
 	protected static String PATH_SERVICE_IMPL = null;
+	protected static String PATH_CONTROLLER_IMPL = null;
 
 	protected static boolean FILE_OVERRIDE = false;
 
@@ -87,6 +89,7 @@ public class AutoGenerator {
 		PATH_XML = getFilePath(saveDir, getPathFromPackageName(config.getXmlPackage()));
 		PATH_SERVICE = getFilePath(saveDir, getPathFromPackageName(config.getServicePackage()));
 		PATH_SERVICE_IMPL = getFilePath(saveDir, getPathFromPackageName(config.getServiceImplPackage()));
+		PATH_CONTROLLER_IMPL = getFilePath(saveDir, getPathFromPackageName(config.getControllerPackage()));
 
 		/**
 		 * 新生成的文件是否覆盖现有文件
@@ -356,13 +359,13 @@ public class AutoGenerator {
 	 */
 	protected String mysqlProcessType(String type) {
 		String t = type.toLowerCase();
-		if (t.contains("char")) {
+		if (t.contains("char") || t.contains("text")) {
 			return "String";
 		} else if (t.contains("bigint")) {
 			return "Long";
 		} else if (t.contains("int")) {
 			return "Integer";
-		} else if (t.contains("date") || t.contains("timestamp")) {
+		} else if (t.contains("date") || t.contains("time") || t.contains("year")) {
 			return "Date";
 		} else if (t.contains("text")) {
 			return "String";
@@ -422,7 +425,7 @@ public class AutoGenerator {
 	protected boolean isDate(List<String> types) {
 		for (String type : types) {
 			String t = type.toLowerCase();
-			if (t.contains("date") || t.contains("timestamp")) {
+			if (t.contains("date") || t.contains("time")) {
 				return true;
 			}
 		}
@@ -843,6 +846,35 @@ public class AutoGenerator {
 	}
 
 	/**
+	 * 构建service实现类文件
+	 *
+	 * @param beanName
+	 * @param controllerName
+	 * @throws IOException
+	 */
+	protected void buildController(String beanName, String controllerName) throws IOException {
+		File serviceFile = new File(PATH_CONTROLLER_IMPL, controllerName + ".java");
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(serviceFile), "utf-8"));
+		bw.write("package " + config.getServiceImplPackage() + ";");
+		bw.newLine();
+		bw.newLine();
+		bw.write("import org.springframework.stereotype.Controller;");
+		bw.newLine();
+		
+		bw = buildClassComment(bw, beanName + " 控制层");
+		bw.newLine();
+		bw.write("@Controller");
+		bw.newLine();
+		bw.write("public class " + controllerName + " {");
+		bw.newLine();
+		bw.newLine();
+		bw.newLine();
+		bw.write("}");
+		bw.flush();
+		bw.close();
+	}
+	
+	/**
 	 * 通用返回参数
 	 *
 	 * @param bw
@@ -857,12 +889,21 @@ public class AutoGenerator {
 		bw.write("\t<sql id=\"Base_Column_List\">");
 		bw.newLine();
 		bw.write("\t\t");
+
+		/*
+		 * 数据库类型
+		 */
+		DBType dbType = DBType.ORACLE;
+		if (config.getConfigDataSource() == ConfigDataSource.MYSQL) {
+			dbType = DBType.MYSQL;
+		}
+
 		/*
 		 * 公共字段
 		 */
 		if (null != config.getConfigBaseEntity()) {
 			for (String column : config.getConfigBaseEntity().getColumns()) {
-				bw.write(DBKeywordsProcessor.convert(column));
+				bw.write(SqlReservedWords.convert(dbType, column));
 				if (column.contains("_")) {
 					bw.write(" AS " + processField(column));
 				}
@@ -876,7 +917,7 @@ public class AutoGenerator {
 			String column = columns.get(i);
 			IdInfo idInfo = idMap.get(column);
 			if (idInfo != null) {
-				bw.write(DBKeywordsProcessor.convert(idInfo.getValue()));
+				bw.write(SqlReservedWords.convert(dbType, column));
 				if (idInfo.getValue().contains("_")) {
 					bw.write(" AS " + processField(idInfo.getValue()));
 				}
@@ -884,7 +925,7 @@ public class AutoGenerator {
 				if (null == config.getConfigBaseEntity()) {
 					bw.write(" ");
 				}
-				bw.write(DBKeywordsProcessor.convert(column));
+				bw.write(SqlReservedWords.convert(dbType, column));
 				if (column.contains("_")) {
 					bw.write(" AS " + processField(column));
 				}

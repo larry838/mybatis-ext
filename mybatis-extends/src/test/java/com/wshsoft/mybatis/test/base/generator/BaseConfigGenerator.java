@@ -13,9 +13,10 @@ public class BaseConfigGenerator {
 		ConfigGenerator cg = new ConfigGenerator();
 		cg.setEntityPackage("com.wshsoft.entity");// entity 实体包路径
 		cg.setMapperPackage("com.wshsoft.mapper");// mapper 映射文件路径
-		cg.setServicePackage("com.wshsoft.service");// service 层路径
+		cg.setServicePackage("com.wshsoft.service");// service 层路径（可以不写）
 		cg.setXmlPackage("com.wshsoft.mapper.xml");// xml层路径（可以不写）
 		cg.setServiceImplPackage("com.wshsoft.service.impl");// serviceimpl层路径（可以不写）
+		cg.setControllerPackage("com.baomidou.controller");//controller层路径（可以不写）
 
 		/* 此处可以配置，自定义 service 及 serviceImpl 子类路径 */
 		//cg.setSuperService("com.xxx.service.IBaseService");
@@ -72,6 +73,7 @@ public class BaseConfigGenerator {
 //		 cg.setMapperXMLName("Test%sMapper");
 //		 cg.setServiceName("Test%sSer");
 //		 cg.setServiceImplName("%sSerImpl");
+//		 cg.setControllerName("%sAction");
 		
 		/**
 		 * 自定义 BaseEntity

@@ -9,6 +9,8 @@ import com.wshsoft.mybatis.mapper.DBType;
 import com.wshsoft.mybatis.mapper.IMetaObjectHandler;
 import com.wshsoft.mybatis.mapper.ISqlInjector;
 import com.wshsoft.mybatis.toolkit.PackageHelper;
+import com.wshsoft.mybatis.toolkit.TableInfoHelper;
+
 import org.apache.ibatis.cache.Cache;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.io.VFS;
@@ -124,7 +126,7 @@ public class MybatisSqlSessionFactoryBean
 		MybatisConfiguration.META_OBJECT_HANDLER = metaObjectHandler;
 	}
 
-	// TODO 注入 字段验证策略
+	// TODO 注入 元对象字段填充控制器
 	public void setFieldStrategy(int key) {
 		MybatisConfiguration.FIELD_STRATEGY = FieldStrategy.getFieldStrategy(key);
 	}
@@ -582,8 +584,10 @@ public class MybatisSqlSessionFactoryBean
 				LOGGER.debug("Property 'mapperLocations' was not specified or no matching resources found");
 			}
 		}
-
-		return this.sqlSessionFactoryBuilder.build(configuration);
+		SqlSessionFactory sqlSessionFactory = this.sqlSessionFactoryBuilder.build(configuration);
+		// TODO 缓存 sqlSessionFactory
+		TableInfoHelper.cacheSqlSessionFactory(sqlSessionFactory);
+		return sqlSessionFactory;
 	}
 
 	/**
@@ -593,7 +597,6 @@ public class MybatisSqlSessionFactoryBean
 		if (this.sqlSessionFactory == null) {
 			afterPropertiesSet();
 		}
-
 		return this.sqlSessionFactory;
 	}
 

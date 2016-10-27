@@ -34,15 +34,16 @@ CREATE TABLE `role` (
 -- ----------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `test_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `test_id` bigint(20) NOT NULL COMMENT '主键ID',
   `name` varchar(30) COLLATE utf8_bin DEFAULT NULL COMMENT '名称',
   `age` int(11) DEFAULT NULL COMMENT '年龄',
-  `birthday` date DEFAULT NULL COMMENT '出生日期',
   `test_type` int(11) DEFAULT '0' COMMENT '测试下划线字段命名类型',
-  `role` bigint(20) DEFAULT NULL,
-  `phone` varchar(64) COLLATE utf8_bin DEFAULT NULL,
+  `role` bigint(20) DEFAULT NULL COMMENT '角色',
+  `phone` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '电话号码',
+  `desc` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '描述',
+  `birthday` date DEFAULT NULL COMMENT '出生日期',
   PRIMARY KEY (`test_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=774164658700161025 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户表'
 
 insert  into `user`(`test_id`,`name`,`age`,`test_type`) values (1,'xiejian',32,'2005-09-30',0),(2,'larry',32,'2015-09-30',1);
 -- ----------------------------

@@ -35,7 +35,7 @@ public class TestUserMapperTest {
 
 		/*
 		 * 此处采用 MybatisSessionFactoryBuilder 构建
-		 * SqlSessionFactory，目的是引入AutoMapper功能
+		 * SqlSessionFactory，目的是引入BaseMapper功能
 		 */
 		MybatisSessionFactoryBuilder mf = new MybatisSessionFactoryBuilder();
 
