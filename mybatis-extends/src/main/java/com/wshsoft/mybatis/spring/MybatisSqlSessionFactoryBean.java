@@ -1,6 +1,7 @@
 package com.wshsoft.mybatis.spring;
 
 import com.wshsoft.mybatis.MybatisConfiguration;
+import com.wshsoft.mybatis.MybatisPlusHolder;
 import com.wshsoft.mybatis.MybatisXMLConfigBuilder;
 import com.wshsoft.mybatis.MybatisXMLMapperBuilder;
 import com.wshsoft.mybatis.annotations.FieldStrategy;
@@ -586,7 +587,7 @@ public class MybatisSqlSessionFactoryBean
 		}
 		SqlSessionFactory sqlSessionFactory = this.sqlSessionFactoryBuilder.build(configuration);
 		// TODO 缓存 sqlSessionFactory
-		TableInfoHelper.cacheSqlSessionFactory(sqlSessionFactory);
+		MybatisPlusHolder.setSqlSessionFactory(sqlSessionFactory);
 		return sqlSessionFactory;
 	}
 

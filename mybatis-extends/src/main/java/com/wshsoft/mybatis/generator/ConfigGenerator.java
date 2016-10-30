@@ -36,7 +36,7 @@ import com.wshsoft.mybatis.toolkit.StringUtils;
  **************************************************************
  * </p>
  * 
- * @author carry xie
+ * @author hubin
  * @Date 2016-01-23
  */
 public class ConfigGenerator {
@@ -52,7 +52,7 @@ public class ConfigGenerator {
 	protected String servicePackage;
 
 	protected String serviceImplPackage;
-	
+
 	protected String controllerPackage;
 
 	protected String superService;
@@ -69,35 +69,35 @@ public class ConfigGenerator {
 	protected String serviceName = "I%sService";
 
 	protected String serviceImplName = "%sServiceImpl";
-	
+
 	protected String controllerName = "%sController";
 
 	/*
 	 * 指定生成表名
 	 */
 	protected String[] tableNames = null;
-	
+
 	/*
-	 * 【实体】是否生成字段常量（默认 false）<br>
-	 * -----------------------------------<br>
-	 * public static final String ID = "test_id";
+	 * 【实体】是否生成字段常量（默认 false）<br> -----------------------------------<br> public
+	 * static final String ID = "test_id";
 	 */
 	protected boolean columnConstant = false;
 
 	/*
-	 * 【实体】是否为构建者模型（默认 false）<br>
-	 * -----------------------------------<br>
-	 * 	public User setName(String name) {
-	 * 		this.name = name;
-	 * 		return this;
-	 * 	}
+	 * 【实体】是否为构建者模型（默认 false）<br> -----------------------------------<br> public
+	 * User setName(String name) { this.name = name; return this; }
 	 */
 	protected boolean buliderModel = false;
-	
+
 	/*
 	 * 是否覆盖当前路径下已有文件（默认 true）
 	 */
 	protected boolean fileOverride = true;
+
+	/*
+	 * true 生成 resultMap ， false 生成通用 Base_Column_List
+	 */
+	protected boolean resultMap = false;
 
 	/* db_config */
 	protected boolean dbPrefix = false;
@@ -122,7 +122,6 @@ public class ConfigGenerator {
 	protected ConfigIdType configIdType = ConfigIdType.LONG;
 
 	protected ConfigBaseEntity configBaseEntity = null;
-
 
 	public String getSaveDir() {
 		return saveDir;
@@ -353,6 +352,14 @@ public class ConfigGenerator {
 		this.fileOverride = fileOverride;
 	}
 
+	public boolean isResultMap() {
+		return resultMap;
+	}
+
+	public void setResultMap(boolean resultMap) {
+		this.resultMap = resultMap;
+	}
+
 	public String getServiceImplPackage() {
 		if (StringUtils.isEmpty(serviceImplPackage)) {
 			serviceImplPackage = servicePackage + ".impl";
@@ -363,7 +370,6 @@ public class ConfigGenerator {
 	public void setServiceImplPackage(String serviceImplPackage) {
 		this.serviceImplPackage = serviceImplPackage;
 	}
-	
 
 	public String getControllerPackage() {
 		return controllerPackage;
@@ -380,4 +386,5 @@ public class ConfigGenerator {
 	public void setControllerName(String controllerName) {
 		this.controllerName = controllerName;
 	}
+
 }

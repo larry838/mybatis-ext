@@ -102,7 +102,7 @@ public class ServiceImpl<M extends BaseMapper<T, PK>, T, PK extends Serializable
 
 	public boolean insertBatch(List<T> entityList) {
 		if (null == entityList) {
-			throw new IllegalArgumentException("entityList must not be empty");
+			throw new IllegalArgumentException("Error: entityList must not be empty");
 		}
 		return retBool(baseMapper.insertBatch(entityList));
 	}
@@ -125,20 +125,20 @@ public class ServiceImpl<M extends BaseMapper<T, PK>, T, PK extends Serializable
 	 */
 	protected boolean insertBatch(List<T> entityList, int batchSize, boolean isSelective) {
 		if (null == entityList) {
-			throw new IllegalArgumentException("entityList must not be empty");
+			throw new IllegalArgumentException("Error: entityList must not be empty");
 		}
 		TableInfo tableInfo = TableInfoHelper.getTableInfo(currentModleClass());
 		if (null == tableInfo) {
-			throw new MybatisExtendsException("Error: insertBatch Fail, ClassGenricType not found .");
+			throw new MybatisExtendsException("Error: Cannot execute insertBatch Method, ClassGenricType not found .");
 		}
 		SqlSession batchSqlSession = tableInfo.getSqlSessionFactory().openSession(ExecutorType.BATCH, false);
 		try {
 			int size = entityList.size();
 			for (int i = 0; i < size; i++) {
 				if (isSelective) {
-					baseMapper.insertSelective(entityList.get(0));
+					baseMapper.insertSelective(entityList.get(i));
 				} else {
-					baseMapper.insert(entityList.get(0));
+					baseMapper.insert(entityList.get(i));
 				}
 				if (i % batchSize == 0) {
 					batchSqlSession.flushStatements();
@@ -146,7 +146,7 @@ public class ServiceImpl<M extends BaseMapper<T, PK>, T, PK extends Serializable
 			}
 			batchSqlSession.flushStatements();
 		} catch (Exception e) {
-			logger.warning("Warn: Method insertBatch Fail. Cause:" + e);
+			logger.warning("Error: Cannot execute insertBatch Method. Cause:" + e);
 			return false;
 		}
 		return true;
@@ -160,7 +160,7 @@ public class ServiceImpl<M extends BaseMapper<T, PK>, T, PK extends Serializable
 
 	public boolean insertBatchSelective(List<T> entityList) {
 		if (null == entityList) {
-			throw new IllegalArgumentException("entityList must not be empty");
+			throw new IllegalArgumentException("Error: entityList must not be empty");
 		}
 		int result = 0;
 		for (T t : entityList) {
@@ -218,7 +218,7 @@ public class ServiceImpl<M extends BaseMapper<T, PK>, T, PK extends Serializable
 
 	public List<T> selectByMap(Map<String, Object> columnMap) {
 		return baseMapper.selectByMap(columnMap);
-	}  
+	}
 
 	public T selectOne(T entity) {
 		return baseMapper.selectOne(entity);
@@ -229,7 +229,7 @@ public class ServiceImpl<M extends BaseMapper<T, PK>, T, PK extends Serializable
 		if (CollectionUtil.isNotEmpty(list)) {
 			int size = list.size();
 			if (size > 1) {
-				logger.warning("Warn: selectOne Method There are " + size + " results.");
+				logger.warning(String.format("Warn: selectOne Method There are  %s results.", size));
 			}
 			return list.get(0);
 		}

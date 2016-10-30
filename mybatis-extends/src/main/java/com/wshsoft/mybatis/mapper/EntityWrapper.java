@@ -6,6 +6,7 @@ import com.wshsoft.mybatis.toolkit.StringUtils;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -373,7 +374,7 @@ public class EntityWrapper<T> implements Serializable {
 	 *            匹配值 List集合
 	 * @return this
 	 */
-	public EntityWrapper<T> in(String column, List<?> value) {
+	public EntityWrapper<T> in(String column, Collection<?> value) {
 		sql.IN(column, value);
 		return this;
 	}
@@ -387,7 +388,7 @@ public class EntityWrapper<T> implements Serializable {
 	 *            匹配值 List集合
 	 * @return this
 	 */
-	public EntityWrapper<T> notIn(String column, List<?> value) {
+	public EntityWrapper<T> notIn(String column, Collection<?> value) {
 		sql.NOT_IN(column, value);
 		return this;
 	}
@@ -401,7 +402,7 @@ public class EntityWrapper<T> implements Serializable {
 	 *            匹配值 object数组
 	 * @return this
 	 */
-	public EntityWrapper<T> in(String column, Object... value) {
+	public EntityWrapper<T> in(String column, Object[] value) {
 		sql.IN(column, Arrays.asList(value));
 		return this;
 	}

@@ -65,6 +65,12 @@ public class BaseConfigGenerator {
 		 * 默认值为true , 是否覆盖当前路径下已有文件
 		 */
 		cg.setFileOverride(true);
+		
+		/*
+		 * true 生成 resultMap ， false 生成通用 Base_Column_List
+		 */
+		cg.setResultMap(false);
+		
 
 		/*
 		 * 自定义类名，需要包含 %s 格式化会填充实体beanName

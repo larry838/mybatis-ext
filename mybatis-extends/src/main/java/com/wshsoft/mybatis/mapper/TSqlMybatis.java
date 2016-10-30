@@ -5,6 +5,8 @@ import com.wshsoft.mybatis.toolkit.CollectionUtil;
 import com.wshsoft.mybatis.toolkit.StringUtils;
 
 import java.text.MessageFormat;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -111,7 +113,7 @@ public class TSqlMybatis extends MybatisAbstractSQL<TSqlMybatis> {
      *            List集合
      * @return
      */
-    public TSqlMybatis IN(String column, List<?> value) {
+    public TSqlMybatis IN(String column, Collection<?> value) {
         handerIn(column, value, false);
         return this;
     }
@@ -125,7 +127,7 @@ public class TSqlMybatis extends MybatisAbstractSQL<TSqlMybatis> {
      *            List集合
      * @return
      */
-    public TSqlMybatis NOT_IN(String column, List<?> value) {
+    public TSqlMybatis NOT_IN(String column, Collection<?> value) {
         handerIn(column, value, true);
         return this;
     }
@@ -208,7 +210,7 @@ public class TSqlMybatis extends MybatisAbstractSQL<TSqlMybatis> {
      * @param isNot
      *            是否为NOT IN操作
      */
-    private void handerIn(String column, List<?> value, boolean isNot) {
+    private void handerIn(String column, Collection<?> value, boolean isNot) {
         if (StringUtils.isNotEmpty(column) && CollectionUtil.isNotEmpty(value)) {
             StringBuilder inSql = new StringBuilder();
             inSql.append(column);
@@ -217,14 +219,17 @@ public class TSqlMybatis extends MybatisAbstractSQL<TSqlMybatis> {
             }
             inSql.append(" IN (");
             int _size = value.size();
-            for (int i = 0; i < _size; i++) {
-                String tempVal = StringUtils.quotaMark(value.get(i));
+            int i = 0;
+            Iterator<?> iterator = value.iterator();
+            while(iterator.hasNext()) {
+                String tempVal = StringUtils.quotaMark(iterator.next());
                 if (i + 1 == _size) {
                     inSql.append(tempVal);
                 } else {
                     inSql.append(tempVal);
                     inSql.append(",");
                 }
+                i++;
             }
             inSql.append(")");
             WHERE(inSql.toString());
