@@ -38,14 +38,15 @@ CREATE TABLE `user` (
   `name` varchar(30) COLLATE utf8_bin DEFAULT NULL COMMENT '名称',
   `age` int(11) DEFAULT NULL COMMENT '年龄',
   `test_type` int(11) DEFAULT '0' COMMENT '测试下划线字段命名类型',
-  `role` bigint(20) DEFAULT NULL COMMENT '角色',
+  `role_id` bigint(20) DEFAULT NULL COMMENT '角色',
   `phone` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '电话号码',
   `desc` varchar(255) COLLATE utf8_bin DEFAULT NULL COMMENT '描述',
   `birthday` date DEFAULT NULL COMMENT '出生日期',
   PRIMARY KEY (`test_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户表'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户表';
 
-insert  into `user`(`test_id`,`name`,`age`,`test_type`) values (1,'xiejian',32,'2005-09-30',0),(2,'larry',32,'2015-09-30',1);
+insert  into `user`(`test_id`,`name`,`age`,`test_type`,`role_id`,`phone`,`desc`,`birthday`) values (1,'xiejian',32,0,1,'13735561307',' ','2016-10-31'),(2,'larry',32,1,2,'13777858464',' ','2016-1-30');
+
 -- ----------------------------
 -- Table structure for test
 -- ----------------------------

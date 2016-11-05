@@ -23,8 +23,8 @@ public class Pagination extends RowBounds implements Serializable {
 	/* 总数 */
 	private int total;
 
-	/* 每页显示条数 */
-	private int size;
+	/* 每页显示条数，默认 10 */
+	private int size = 10;
 
 	/* 总页数 */
 	private int pages;
@@ -110,12 +110,6 @@ public class Pagination extends RowBounds implements Serializable {
 		if (this.total % this.size != 0) {
 			this.pages++;
 		}
-		/**
-		 * 当前页大于总页数，当前页设置为第一页
-		 */
-		/*if (this.current > this.pages) {
-			this.current = 1;
-		}*/
 	}
 
 	public int getSize() {
@@ -162,6 +156,10 @@ public class Pagination extends RowBounds implements Serializable {
 
 	public void setAsc(boolean isAsc) {
 		this.isAsc = isAsc;
+	}
+	
+	public void setSize(int size) {
+		this.size = size;
 	}
 
 	@Override

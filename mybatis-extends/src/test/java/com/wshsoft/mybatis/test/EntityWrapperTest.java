@@ -242,7 +242,7 @@ public class EntityWrapperTest {
 		ew.between("test_type", val1, val2);
 		String sqlPart = ew.getSqlSegment();
 		System.out.println("sql ==> " + sqlPart);
-		Assert.assertEquals("WHERE (test_type BETWEEN 11 AND 33)", sqlPart);
+		Assert.assertEquals("WHERE (test_type BETWEEN '11' AND '33')", sqlPart);
 	}
 
 	/**
